@@ -53,6 +53,7 @@ def focal_tversky(preds, target, alpha=0.03, beta=0.97, epsilon=1e-6):
     FP = ((1 - target) * preds).sum()
     FN = (target * (1 - preds)).sum()
     Tversky = (TP + epsilon) / (TP + alpha * FP + beta * FN + epsilon)
+    Tversky = (1-Tversky)
     return Tversky + focal
 
 class VoxelwiseSupConLoss_inImage(nn.Module):

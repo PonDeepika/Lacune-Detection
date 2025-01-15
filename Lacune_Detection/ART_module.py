@@ -15,8 +15,13 @@ def main(args):
   mni_atlas = nib.load(MARS_atlas).get_fdata()
 
   possible_values = np.unique(np.round(mni_atlas))
-  thresholds = [0.7, 0.65, 1, 0.55, 0.65, 0.5, 0.5, 0.65, 0.5,0.5,0.55,0.55, 0.65, 0.55] 
-  thresholds = [threshold+0.1  for threshold in thresholds]
+  possible_values = possible_values[1:]
+  # Threshold for white matter, frontal, Internal capsule and External capsule = 0.5
+  # Threshold for Basal Ganglia, Temporal, Cerebellum, Parietal, Insular = 0.55
+  # Threshold for Thalamus, Hippocampus, Brain stem, Occipital = 0.65
+
+  thresholds = [0.65, 1, 0.55, 0.65, 0.5, 0.5, 0.65, 0.5,0.5,0.55,0.55, 0.65, 0.55]
+  thresholds = [threshold+0.1  for threshold in thresholds] #threhold incremented by 0.1 for VALDO
   for i in range(0,len(Test_Maskfiles)):
     grd = nib.load(Test_Maskfiles[i]).get_fdata()
     mask = nib.load(SAM_unthresh_files[i]).get_fdata()
@@ -53,6 +58,8 @@ def main(args):
 
 
 if __name__ == "__main__":
+    # MARS region atlas in MNI space is taken from
+    # https://github.com/v-sundaresan/microbleed-size-counting 
     parser = argparse.ArgumentParser(description="Run segmentation model on test data")
     parser.add_argument("--MARS_ATLAS", type=str, default="cuda:1", help="MARS Atlas in MNI")
     parser.add_argument("--SAM_output_files", type=str, nargs='+',required=True, help="List of unthresholded SAM output files ")

@@ -11,17 +11,11 @@ import skimage
 import cv2
 from segment_anything import sam_model_registry, SamPredictor
 from u2net_cl import U2NETP
-from skimage.measure import label
 from utils import cut_zeros1d, tight_crop_data, determine_dice_metric, get_bounding_boxes, calculate_confusion_matrix, box_intersection, helper_resize
 import argparse
 from scipy.ndimage import binary_fill_holes
 from skimage import measure
-from sklearn.metrics import confusion_matrix
 from skimage.measure import regionprops, label
-from torch.utils.data import Dataset
-from torch.nn.functional import one_hot
-from skimage.io import imread
-from scipy.ndimage import zoom
 from skimage.transform import resize
 
 

@@ -116,8 +116,6 @@ def main(args):
                 data = data.to(device=device)
                 label = torch.round(label)
                 label = label.to(device=device)
-                data = Variable(data)
-                label = Variable(label)
                 if list(data.size())[0] == 8:
                     batches += 1
                     pred_mask = model.forward(data)
@@ -134,6 +132,7 @@ def main(args):
         val_dice = determine_dice_metric(torch.from_numpy(seg_results > 0.5), torch.from_numpy(test_labels))
 
         if val_dice > best_dice:
+            best_dice = val_dice
             filename = f"best_epoch.pth"
             full_file_path = os.path.join(args.folder_path, filename)
             torch.save(model.state_dict(), full_file_path)
